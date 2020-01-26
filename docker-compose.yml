@@ -4,8 +4,6 @@ services:
     build: .
     volumes:
       - ./:/code
-    ports:
-      - "8080:5000"
     environment:
       REDIS_HOST: redis
       MYSQL_DATABASE_USER: root
@@ -19,3 +17,10 @@ services:
     environment:
       MYSQL_DATABASE: website
       MYSQL_ROOT_PASSWORD: password1
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '55555:80'
