@@ -3,5 +3,19 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker build -t vladmoldovan/guestbook -f Dockerfile .
+# Create a dev/test build
+#before_install:
+#  - docker build -t vladmoldovan/guestbook-test -f Dockerfile.dev .
+
+# Test the above build with whatever scripts
+#script:
+#  - docker run vladmoldovan/guestbook-test my test script command
+
+after_success:
+  - docker build -t vladmoldovan/guestbook .
+  - docker build -t vladmoldovan/guestbook_nginx ./nginx
+  # Log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to docker hub
+  - docker push vladmoldovan/guestbook
+  - docker push vladmoldovan/guestbook_nginx
