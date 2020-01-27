@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker
 
-# Create a dev/test build
+# Create a dev/test build from separate Dockerfile.dev if available
 #before_install:
 #  - docker build -t vladmoldovan/guestbook-test -f Dockerfile.dev .
 
@@ -11,6 +11,8 @@ services:
 #script:
 #  - docker run vladmoldovan/guestbook-test my test script command
 
+# is test are successfull with Dev images we process with building PROD images
+# which will also be uploaded to a docker repo of my choice
 after_success:
   - docker build -t vladmoldovan/guestbook .
   - docker build -t vladmoldovan/guestbook_nginx ./nginx
@@ -20,6 +22,8 @@ after_success:
   - docker push vladmoldovan/guestbook
   - docker push vladmoldovan/guestbook_nginx
 
+# Deploy; Forward the code to AWSElasticBeanstalk. 
+# File Dockerrun.aws.json will be the main "docker-compose" equivalent for AWSElasticBeanstalk
 deploy:
   provider: elasticbeanstalk
   region: eu-west-1
