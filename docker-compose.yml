@@ -23,5 +23,4 @@ services:
       dockerfile: Dockerfile
       context: ./nginx
     ports:
-      - '80:80'
-      - '443:443'
+      - '55555:80'
